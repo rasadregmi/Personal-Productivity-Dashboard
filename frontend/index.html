@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="ProductiveHub - Your all-in-one digital workspace for notes, tasks, reminders, and productivity tools" />
+    <meta name="keywords" content="productivity, dashboard, notes, tasks, reminders, bookmarks, timer, organization" />
+    <meta name="author" content="ProductiveHub" />
+    <meta name="theme-color" content="#0ea5e9" />
+    
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ProductiveHub - Your Digital Workspace" />
+    <meta property="og:description" content="Boost your productivity with our all-in-one dashboard featuring notes, tasks, reminders, and powerful tools." />
+    <meta property="og:site_name" content="ProductiveHub" />
+    
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="ProductiveHub - Your Digital Workspace" />
+    <meta property="twitter:description" content="Boost your productivity with our all-in-one dashboard featuring notes, tasks, reminders, and powerful tools." />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <title>ProductiveHub - Your Digital Workspace</title>
+    
+    <style>
+      html {
+        line-height: 1.15;
+        -webkit-text-size-adjust: 100%;
+      }
+      
+      body {
+        margin: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+      }
+      
+      #root {
+        min-height: 100vh;
+      }
+      
+      .loading-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
+      }
+      
+      .loading-logo {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #0ea5e9, #d946ef);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: pulse 2s infinite;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
+      
+      .loading-text {
+        color: white;
+        font-size: 24px;
+        font-weight: 700;
+        margin-top: 20px;
+        text-align: center;
+      }
+      
+      @keyframes pulse {
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+      
+      .loading-fade-out {
+        opacity: 0;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading" class="loading-container">
+      <div style="text-align: center;">
+        <div class="loading-logo">
+          <span style="color: white; font-size: 32px; font-weight: bold;">P</span>
+        </div>
+        <div class="loading-text">ProductiveHub</div>
+        <div style="color: rgba(255,255,255,0.8); font-size: 14px; margin-top: 8px;">Loading your workspace...</div>
+      </div>
+    </div>
+    
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    
+    <script>
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const loading = document.getElementById('loading');
+          if (loading) {
+            loading.classList.add('loading-fade-out');
+            setTimeout(() => loading.remove(), 500);
+          }
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>
