@@ -48,7 +48,7 @@ const Dashboard = () => {
 
   const fetchRandomQuote = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/quotes/random`);
+      const response = await fetch(`${API_BASE_URL}/quotes/random`);
       const data = await response.json();
       setQuote(data);
     } catch (error) {
@@ -59,10 +59,20 @@ const Dashboard = () => {
   const fetchHealth = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/health`);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
       const data = await response.json();
       setHealth(data);
     } catch (error) {
       console.error('Error fetching health:', error);
+      
+      setHealth({
+        status: 'unhealthy',
+        error: error.message,
+        timestamp: new Date().toISOString(),
+        uptime: 0
+      });
     }
   };
 
@@ -295,34 +305,92 @@ const Dashboard = () => {
             </div>
             {health ? (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="group text-center p-6 bg-white rounded-xl border border-green-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <div className={`group text-center p-6 bg-white rounded-xl border transition-all duration-300 transform hover:-translate-y-1 ${
+                  health.status === 'healthy' 
+                    ? 'border-green-200 hover:shadow-lg' 
+                    : 'border-red-200 hover:shadow-lg shadow-red-100'
+                }`}>
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 ${
+                    health.status === 'healthy'
+                      ? 'bg-gradient-to-br from-green-400 to-green-600'
+                      : 'bg-gradient-to-br from-red-400 to-red-600'
+                  }`}>
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      {health.status === 'healthy' ? (
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      ) : (
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      )}
                     </svg>
                   </div>
-                  <p className="font-bold text-green-700 text-lg mb-1">System Healthy</p>
-                  <p className="text-sm text-green-600">All services operational</p>
-                </div>
-                <div className="group text-center p-6 bg-white rounded-xl border border-blue-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <p className="font-bold text-blue-700 text-lg mb-1">
-                    {Math.floor(health.uptime / 60)}m Uptime
+                  <p className={`font-bold text-lg mb-1 ${
+                    health.status === 'healthy' ? 'text-green-700' : 'text-red-700'
+                  }`}>
+                    {health.status === 'healthy' ? 'System Healthy' : 'System Issues'}
                   </p>
-                  <p className="text-sm text-blue-600">Server running smooth</p>
+                  <p className={`text-sm ${
+                    health.status === 'healthy' ? 'text-green-600' : 'text-red-600'
+                  }`}>
+                    {health.status === 'healthy' ? 'All services operational' : 'Some services may be down'}
+                  </p>
                 </div>
-                <div className="group text-center p-6 bg-white rounded-xl border border-teal-200 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                  <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-teal-600 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <div className={`group text-center p-6 bg-white rounded-xl border transition-all duration-300 transform hover:-translate-y-1 ${
+                  health.status === 'healthy' 
+                    ? 'border-blue-200 hover:shadow-lg' 
+                    : 'border-red-200 hover:shadow-lg shadow-red-100'
+                }`}>
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 ${
+                    health.status === 'healthy'
+                      ? 'bg-gradient-to-br from-blue-400 to-blue-600'
+                      : 'bg-gradient-to-br from-red-400 to-red-600'
+                  }`}>
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                      {health.status === 'healthy' ? (
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      ) : (
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L5.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                      )}
                     </svg>
                   </div>
-                  <p className="font-bold text-teal-700 text-lg mb-1">Data Synced</p>
-                  <p className="text-sm text-teal-600">Latest information</p>
+                  <p className={`font-bold text-lg mb-1 ${
+                    health.status === 'healthy' ? 'text-blue-700' : 'text-red-700'
+                  }`}>
+                    {health.status === 'healthy' ? `${Math.floor(health.uptime / 60)}m Uptime` : 'Server Down'}
+                  </p>
+                  <p className={`text-sm ${
+                    health.status === 'healthy' ? 'text-blue-600' : 'text-red-600'
+                  }`}>
+                    {health.status === 'healthy' ? 'Server running smooth' : 'Connection failed'}
+                  </p>
+                </div>
+                <div className={`group text-center p-6 bg-white rounded-xl border transition-all duration-300 transform hover:-translate-y-1 ${
+                  health.status === 'healthy' 
+                    ? 'border-teal-200 hover:shadow-lg' 
+                    : 'border-red-200 hover:shadow-lg shadow-red-100'
+                }`}>
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 ${
+                    health.status === 'healthy'
+                      ? 'bg-gradient-to-br from-teal-400 to-teal-600'
+                      : 'bg-gradient-to-br from-red-400 to-red-600'
+                  }`}>
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      {health.status === 'healthy' ? (
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                      ) : (
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L5.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                      )}
+                    </svg>
+                  </div>
+                  <p className={`font-bold text-lg mb-1 ${
+                    health.status === 'healthy' ? 'text-teal-700' : 'text-red-700'
+                  }`}>
+                    {health.status === 'healthy' ? 'Data Synced' : 'Sync Failed'}
+                  </p>
+                  <p className={`text-sm ${
+                    health.status === 'healthy' ? 'text-teal-600' : 'text-red-600'
+                  }`}>
+                    {health.status === 'healthy' ? 'Latest information' : 'Data unavailable'}
+                  </p>
                 </div>
               </div>
             ) : (
