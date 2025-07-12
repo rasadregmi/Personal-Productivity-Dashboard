@@ -6,10 +6,10 @@ const API_BASE_URL = 'http://localhost:4000/api';
 const Dashboard = () => {
   const navigate = useNavigate();
   const [stats, setStats] = useState({
-    notes: 0,
-    todos: { total: 0, completed: 0, pending: 0 },
-    reminders: { total: 0, active: 0 },
-    bookmarks: 0
+    notes: { total: 0 },
+    todos: { total: 0, completed: 0 },
+    reminders: { total: 0 },
+    bookmarks: { total: 0 }
   });
   const [quote, setQuote] = useState(null);
   const [health, setHealth] = useState(null);
@@ -202,9 +202,9 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <StatCard
             title="Notes"
-            value={stats.notes || 0}
+            value={stats.notes?.total || 0}
             subtitle="Knowledge base entries"
-            icon="�"
+            icon="📝"
             onClick={() => navigate('/notes')}
           />
           <StatCard
@@ -215,7 +215,7 @@ const Dashboard = () => {
             onClick={() => navigate('/todos')}
             stats={[
               { label: 'Completed', value: stats.todos?.completed || 0, color: 'text-green-600' },
-              { label: 'Pending', value: stats.todos?.pending || 0, color: 'text-amber-600' }
+              { label: 'Pending', value: (stats.todos?.total || 0) - (stats.todos?.completed || 0), color: 'text-amber-600' }
             ]}
           />
           <StatCard
@@ -224,15 +224,12 @@ const Dashboard = () => {
             subtitle="Scheduled reminders"
             icon="🔔"
             onClick={() => navigate('/reminders')}
-            stats={[
-              { label: 'Active', value: stats.reminders?.active || 0, color: 'text-blue-600' }
-            ]}
           />
           <StatCard
             title="Bookmarks"
-            value={stats.bookmarks || 0}
+            value={stats.bookmarks?.total || 0}
             subtitle="Saved links"
-            icon="�"
+            icon="🔗"
             onClick={() => navigate('/bookmarks')}
           />
         </div>
