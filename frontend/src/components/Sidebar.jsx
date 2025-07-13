@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const menuItems = [
   { id: 'dashboard', name: 'Dashboard', icon: 'M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z', path: '/dashboard' },
@@ -10,10 +11,12 @@ const menuItems = [
   { id: 'texttools', name: 'Text Tools', icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z', path: '/texttools' },
   { id: 'quotes', name: 'Quotes', icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z', path: '/quotes' },
   { id: 'timer', name: 'Timer', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z', path: '/timer' },
+  { id: 'profile', name: 'Profile', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', path: '/profile' },
 ];
 
 const Sidebar = ({ activeModule }) => {
   const location = useLocation();
+  const { user } = useAuth();
 
   const isActive = (itemId, itemPath) => {
     if (activeModule === itemId) return true;
@@ -41,7 +44,9 @@ const Sidebar = ({ activeModule }) => {
             <h1 className="text-2xl font-bold bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
               ProductiveHub
             </h1>
-            <p className="text-sm text-slate-400 font-medium">Enterprise Platform</p>
+            <p className="text-sm text-slate-400 font-medium">
+              Welcome, {user?.firstName || 'User'}
+            </p>
           </div>
         </div>
       </div>

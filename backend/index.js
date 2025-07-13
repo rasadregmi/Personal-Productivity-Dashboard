@@ -1,9 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
+require('dotenv').config();
 
 const swaggerSpecs = require('./config/swagger');
 
+const authRoutes = require('./routes/auth');
 const systemRoutes = require('./routes/system');
 const notesRoutes = require('./routes/notes');
 const todosRoutes = require('./routes/todos');
@@ -19,8 +21,9 @@ console.log('Starting Personal Productivity Dashboard Backend...');
 const app = express();
 const port = process.env.PORT || 4000;
 
-
-app.use(cors());
+app.use(cors({
+  origin: process.env.CORS_ORIGIN
+}));
 app.use(express.json());
 
 
@@ -29,6 +32,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, {
   customSiteTitle: 'Personal Productivity Dashboard API'
 }));
 
+app.use('/api/auth', authRoutes);
 app.use('/api', systemRoutes);
 app.use('/api/notes', notesRoutes);
 app.use('/api/todos', todosRoutes);
@@ -45,6 +49,8 @@ console.log('Routes configured');
 /**
  * @swagger
  * tags:
+ *   - name: Authentication
+ *     description: User authentication and profile management
  *   - name: System
  *     description: System health and statistics endpoints
  *   - name: Notes

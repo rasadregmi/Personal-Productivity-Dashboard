@@ -9,12 +9,12 @@ const swaggerOptions = {
       description: 'A comprehensive API for managing personal productivity including notes, todos, reminders, bookmarks, quotes, timers, and text utilities.',
       contact: {
         name: 'Personal Productivity Dashboard',
-        url: 'http://localhost:4000'
+        url: process.env.API_BASE_URL
       }
     },
     servers: [
       {
-        url: 'http://localhost:4000',
+        url: process.env.API_BASE_URL,
         description: 'Development server'
       }
     ],
