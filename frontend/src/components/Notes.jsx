@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-const API_BASE_URL = 'http://localhost:4000/api';
+import { API_BASE_URL } from '../config';
 
 const Notes = () => {
   const [notes, setNotes] = useState([]);
