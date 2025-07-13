@@ -1,4 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcryptjs');
 
 const data = {
   notes: [
@@ -35,9 +36,30 @@ const data = {
   timers: []
 };
 
+const users = [];
+
+const createDemoUser = async () => {
+  const hashedPassword = await bcrypt.hash('password123', 12);
+  const demoUser = {
+    id: 'demo-user-1',
+    email: 'demo@example.com',
+    password: hashedPassword,
+    firstName: 'Demo',
+    lastName: 'User',
+    isActive: true,
+    createdAt: new Date('2024-01-01').toISOString(),
+    updatedAt: new Date().toISOString(),
+    lastLogin: null
+  };
+  users.push(demoUser);
+};
+
+createDemoUser().catch(console.error);
+
 const generateId = () => uuidv4();
 
 module.exports = {
   data,
+  users,
   generateId
 };
