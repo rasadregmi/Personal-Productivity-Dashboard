@@ -13,7 +13,7 @@
 |------|------------|------|
 | Rasad Regmi | 221737 | Backend Stack Developer & DevOps |
 | Madhusudan Bhandari | 221722 | Frontend Stack Developer |
-| Daisy Rajbhandari | 2216 | Frontend Developer |
+| Daisy Rajbhandari | 221616 | Frontend Developer |
 
 ---
 
