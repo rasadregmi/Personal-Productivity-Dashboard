@@ -11,8 +11,8 @@
 ### Group Number: 03
 | Name | Roll Number | Role |
 |------|------------|------|
-| Rasad Regmi | 221737 | Backend Stack Developer & DevOps |
-| Madhusudan Bhandari | 221722 | Frontend Stack Developer |
+| Rasad Regmi | 221737 | Backend Developer & DevOps |
+| Madhusudan Bhandari | 221722 | Frontend Developer |
 | Daisy Rajbhandari | 221616 | Frontend Developer |
 
 ---
